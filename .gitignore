@@ -1,0 +1,8 @@
+# Never commit API credentials
+.streamlit/secrets.toml
+.env
+
+__pycache__/
+*.py[cod]
+.venv/
+venv/
