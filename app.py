@@ -1,6 +1,6 @@
 """
-The Supply Chain Expediter
-==========================
+Cat Engineer
+============
 AINU Misneach 2026 - Track 01
 
 The hire an early hardware founder cannot afford yet: a supply chain analyst who
@@ -10,11 +10,23 @@ live distributor data.
 Run with:  streamlit run app.py
 """
 
+import base64
 import time
 from datetime import date
+from pathlib import Path
 
 import pandas as pd
 import streamlit as st
+
+ASSETS = Path(__file__).parent / "assets"
+# The supplied icon.png is a black wordmark on an opaque white field, which
+# would show as a white box in dark mode and is mostly empty margin. These are
+# tight, transparent crops of it - one inked for each theme, plus the cat mark
+# on its own for the favicon and the collapsed sidebar.
+LOGO_ON_LIGHT = ASSETS / "logo-on-light.png"
+LOGO_ON_DARK = ASSETS / "logo-on-dark.png"
+MARK_ON_LIGHT = ASSETS / "mark-on-light.png"
+MARK_ON_DARK = ASSETS / "mark-on-dark.png"
 
 from demo_emails import DEMO_EMAILS
 from expediter import (
@@ -42,8 +54,8 @@ BOTTLENECK = (
 )
 
 st.set_page_config(
-    page_title="The Supply Chain Expediter",
-    page_icon=":material/conveyor_belt:",
+    page_title="Cat Engineer",
+    page_icon=str(MARK_ON_LIGHT),
     layout="wide",
     initial_sidebar_state="expanded",
 )
@@ -56,7 +68,8 @@ st.markdown(
         background: linear-gradient(120deg, #131a2b 0%, #1f3a5f 55%, #2d6ca8 100%);
         color: #fff; padding: 1.4rem 1.6rem; border-radius: 14px; margin-bottom: 1.2rem;
       }
-      .sx-hero h1 { margin: 0 0 .25rem 0; font-size: 1.9rem; letter-spacing: -.02em; }
+      .sx-hero h1 { margin: 0 0 .35rem 0; font-size: 1.9rem; letter-spacing: -.02em; }
+      .sx-hero h1 img { display: block; height: 3.1rem; width: auto; }
       .sx-hero p  { margin: 0; opacity: .88; font-size: .97rem; }
       .sx-badge {
         display: inline-block; background: rgba(255,255,255,.16); border-radius: 999px;
@@ -70,6 +83,33 @@ st.markdown(
     </style>
     """,
     unsafe_allow_html=True,
+)
+
+
+def _dark_mode():
+    """True when the browser is rendering the app in dark mode.
+
+    st.context.theme is unset on the very first run, before the browser has
+    reported back, so fall back to light - which matches Streamlit's own
+    default and keeps the dark-inked logo readable.
+    """
+    theme = getattr(st.context, "theme", None)
+    return getattr(theme, "type", None) == "dark"
+
+
+@st.cache_data(show_spinner=False)
+def _data_uri(path):
+    """Inline a PNG for use inside the hero's HTML block."""
+    encoded = base64.b64encode(Path(path).read_bytes()).decode("ascii")
+    return "data:image/png;base64,{}".format(encoded)
+
+
+# Pinned to the top of the sidebar and the app header. Called early, because
+# st.logo renders only the image from its last call on a page.
+st.logo(
+    str(LOGO_ON_DARK if _dark_mode() else LOGO_ON_LIGHT),
+    size="large",
+    icon_image=str(MARK_ON_DARK if _dark_mode() else MARK_ON_LIGHT),
 )
 
 
@@ -117,11 +157,11 @@ def hero():
         """
         <div class="sx-hero">
           <div class="sx-badge">AINU Misneach 2026 &middot; Track 01</div>
-          <h1>The Supply Chain Expediter</h1>
+          <h1><img src="{logo}" alt="Cat Engineer"></h1>
           <p>Supplier delay email in &mdash; a costed, sourceable recovery plan out,
              built on live distributor stock and pricing.</p>
         </div>
-        """,
+        """.format(logo=_data_uri(LOGO_ON_DARK)),
         unsafe_allow_html=True,
     )
 
@@ -199,7 +239,6 @@ def nexar_sidebar():
 # Sidebar
 # --------------------------------------------------------------------------
 with st.sidebar:
-    st.markdown("### :material/conveyor_belt: Supply Chain Expediter")
     st.caption("Your first procurement hire.")
     page = st.radio(
         "Go to",
@@ -287,7 +326,7 @@ def run_expediter(raw_text, client):
     started = time.perf_counter()
     result = {"raw": raw_text, "errors": []}
 
-    with st.status("Expediter is working...", expanded=True) as status:
+    with st.status("Cat Engineer is working...", expanded=True) as status:
         st.write("Reading the delay notice...")
         candidates = extract_mpn_candidates(raw_text)
         quantity = extract_quantity(raw_text)
@@ -600,7 +639,7 @@ def page_expedite():
     client = st.session_state.client
     if client is None:
         st.info(
-            "Not connected to Nexar — the Expediter will run against its offline "
+            "Not connected to Nexar — Cat Engineer will run against its offline "
             "snapshot ({}) and label every result as such. Connect in the sidebar "
             "for live distributor data.".format(SNAPSHOT_LABEL),
             icon=":material/cloud_off:",
@@ -631,7 +670,7 @@ def page_expedite():
             placeholder="Paste the email. Anything quoting a manufacturer part number works.",
         )
 
-    if st.button("Run the Expediter", type="primary", width="stretch",
+    if st.button("Run Cat Engineer", type="primary", width="stretch",
                  disabled=not str(raw_text).strip()):
         st.session_state.pending = run_expediter(raw_text, client)
         st.rerun()
@@ -730,7 +769,7 @@ def page_roi():
         "Each of these plans required cross-referencing distributor stock, factory "
         "lead times and price breaks across multiple sources, then checking "
         "alternates one by one. That is roughly **45-90 minutes per delay** by hand. "
-        "The Expediter returns it in **seconds**, against the same live data."
+        "Cat Engineer returns it in **seconds**, against the same live data."
     )
     st.caption("Live Nexar API calls made this session: {}".format(st.session_state.api_calls))
 
