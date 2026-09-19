@@ -9,23 +9,43 @@ distributor data**, not invented numbers.
 
 ## Founder Persona
 
-An **early-stage hardware / robotics founder** running a small pilot production
-line. No procurement hire, no supply chain analyst, no ERP.
+**Ben Carter**, co-founder and CEO of **Aisle Robotics** — four people in
+Somerville building a warehouse robot that moves totes between picking stations
+and packout. He came from logistics operations, not engineering.
+
+There is no procurement hire, no supply chain analyst, and no ERP. The BOM is a
+Google Sheet with 180 line items. Purchase orders go out as emails. Purchasing
+landed on Ben because he holds the company card.
 
 ## The Bottleneck
 
-**Component shortages.** A supplier emails to say a part has slipped 22 weeks.
-That one email costs the founder half a day: find the part number, check stock at
-every distributor, compare factory lead times, price the alternates, work out
-whether any of it actually beats waiting.
+**Component shortages.** A distributor emails to say a part has slipped 22 weeks.
 
-They do this by hand, across a dozen browser tabs, every time a supplier slips.
+Ben can't read that email. Not the jargon — allocation, MOQ, price hold — and
+certainly not the question underneath it: *will a substitute work?* So he does
+what he can, by hand, across a dozen browser tabs: find the part number, check
+stock at every distributor, compare factory lead times, price the alternates,
+work out whether any of it beats waiting.
+
+Half a day, every time a supplier slips. And when the answer needs real
+electrical judgment, he forwards the thread to a contract engineer at $150/hr
+and waits two days — while the price hold expires and a booked contract-
+manufacturer slot gets closer.
+
+## The Stakes
+
+Twenty robots for a pilot at **Northfield Logistics**, a 3PL distribution centre.
+One booked production slot. Every part has to be at the factory before it opens,
+or the factory moves to the next customer and Aisle waits weeks for another.
+
+A missing $3 microcontroller does not cost $3. It costs the slot.
 
 ## The Hire
 
-The Expediter is the procurement analyst they'd hire if they could. It reads the
-email, resolves the real parts against live distributor data, and returns a ranked
-recovery plan with the downtime cost attached.
+The Expediter is the procurement analyst Ben would hire if he could — and he
+can't, because he needs about a third of one. It reads the email, resolves the
+real parts against live distributor data, and returns a ranked recovery plan
+with the downtime cost attached.
 
 ---
 
@@ -90,8 +110,9 @@ Opens at `http://localhost:8501`.
 
 1. Sidebar → **Connect to Nexar**. The status goes green; the live-call counter
    starts at zero. This is the moment to say the data is real.
-2. **Expedite a Delay** → the Meridian email. Two part numbers buried in prose,
-   only one of them actually delayed. Read the line about the 22-week lead time.
+2. **Expedite a Delay** → the Meridian email. This is what actually lands in
+   Ben's inbox: two part numbers buried in prose, only one of them delayed.
+   Read the line about the 22-week lead time.
 3. **Run the Expediter.** Watch the status: candidates found → resolved against
    Nexar → live stock and pricing → alternates.
 4. The payoff: *waiting puts parts on the line in February. Digi-Key puts them
@@ -164,3 +185,5 @@ A full recovery plan costs **two** Nexar calls, regardless of how many parts the
 email mentions: one `supMultiMatch` batching every candidate MPN, and one more
 batching the alternates. Tokens are cached in-process for their full 24-hour
 lifetime, as Nexar's own guidance asks.
+
+The substantive change is that the persona is now a named person with a booked factory slot and a contractual pilot, which turns the ROI table from an abstract $2,500/day into something with consequences. I also added a short Stakes section, since "a missing $3 part costs the slot" is the line that makes the downtime number land.
