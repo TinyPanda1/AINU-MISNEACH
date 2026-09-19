@@ -148,6 +148,56 @@ OFFLINE_PARTS = {
         median=5.40,
     ),
 
+    # ---- G4 family, for pasted emails outside the scripted demos -----------
+    "STM32G474RET6": _part(
+        "STM32G474RET6", "STMicroelectronics",
+        "ARM Cortex-M4 MCU 512KB Flash 170MHz, LQFP-64",
+        "Microcontrollers (MCU/MPU/SOC)",
+        sellers=[
+            ("Digi-Key", 2180, 140, 1, [(1, 8.54), (100, 7.21), (1000, 6.44)]),
+            ("Mouser", 1460, 147, 1, [(1, 8.70), (100, 7.36)]),
+            ("Arrow Electronics", 0, 182, 1000, [(1000, 6.18)]),
+            ("Avnet", 3050, 154, 1, [(1, 8.32), (500, 6.95)]),
+        ],
+        similar=[
+            ("STM32G474VET6", "Cortex-M4 MCU 512KB, LQFP-100", "STMicroelectronics", 1740),
+            ("STM32G473RET6", "Cortex-M4 MCU 512KB, LQFP-64", "STMicroelectronics", 2960),
+            ("STM32G474CET6", "Cortex-M4 MCU 512KB, LQFP-48", "STMicroelectronics", 4310),
+            ("STM32G431RBT6", "Cortex-M4 MCU 128KB, LQFP-64", "STMicroelectronics", 8620),
+        ],
+        median=6.88,
+    ),
+    "STM32G474VET6": _part(
+        "STM32G474VET6", "STMicroelectronics", "Cortex-M4 MCU 512KB Flash 170MHz, LQFP-100",
+        "Microcontrollers (MCU/MPU/SOC)",
+        sellers=[("Digi-Key", 1740, 154, 1, [(1, 9.24), (100, 7.88), (1000, 7.02)]),
+                 ("Mouser", 980, 161, 1, [(1, 9.41), (100, 8.04)])],
+        median=7.46,
+    ),
+    "STM32G473RET6": _part(
+        "STM32G473RET6", "STMicroelectronics", "Cortex-M4 MCU 512KB Flash 170MHz, LQFP-64",
+        "Microcontrollers (MCU/MPU/SOC)",
+        sellers=[("Digi-Key", 2960, 126, 1, [(1, 8.11), (100, 6.84), (1000, 6.09)]),
+                 ("Avnet", 1520, 133, 1, [(1, 7.95), (500, 6.60)])],
+        median=6.52,
+    ),
+    "STM32G474CET6": _part(
+        "STM32G474CET6", "STMicroelectronics", "Cortex-M4 MCU 512KB Flash 170MHz, LQFP-48",
+        "Microcontrollers (MCU/MPU/SOC)",
+        sellers=[("Digi-Key", 4310, 119, 1, [(1, 8.05), (100, 6.72), (1000, 5.94)]),
+                 ("Mouser", 2240, 126, 1, [(1, 8.18), (100, 6.88)]),
+                 ("LCSC", 6800, 112, 10, [(10, 6.41), (100, 5.70)])],
+        median=6.20,
+    ),
+    "STM32G431RBT6": _part(
+        "STM32G431RBT6", "STMicroelectronics", "Cortex-M4 MCU 128KB Flash 170MHz, LQFP-64",
+        "Microcontrollers (MCU/MPU/SOC)",
+        sellers=[("Digi-Key", 8620, 84, 1, [(1, 4.61), (100, 3.74), (1000, 3.28)]),
+                 ("Mouser", 5140, 91, 1, [(1, 4.72), (100, 3.85)]),
+                 ("LCSC", 11300, 77, 10, [(10, 3.52), (100, 3.01)])],
+        median=3.44,
+    ),
+
     # ---- alternates, so the second lookup also survives offline ------------
     "DRV8824PWPR": _part(
         "DRV8824PWPR", "Texas Instruments", "Stepper Motor Driver 1.6A, HTSSOP-28",

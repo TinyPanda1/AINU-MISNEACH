@@ -59,6 +59,19 @@ _MPN_STOPWORDS = {
     "AM", "PM", "NO", "RE", "FW", "CC", "BCC", "HTTP", "HTTPS", "WWW", "COM",
 }
 
+# Document references - "PO-2291", "RMA_88213", "INV/4471". A bare "PO 4471"
+# already falls out, because the two halves fail the stopword and letter tests
+# separately; it is only the joined form that survives to look like an MPN.
+# Deliberately conservative: the prefix must be followed by digits alone, so
+# real catalogue prefixes that happen to collide (TI's REF3025 voltage
+# references, SO-8 package codes) are never swallowed. A junk candidate that
+# slips through is harmless - it just returns no match - but dropping a real
+# MPN loses the part the email was actually about.
+_REFERENCE_RE = re.compile(
+    r"^(?:PO|SO|WO|ORD|ORDER|RMA|INV|INVOICE|TICKET)[-_/\.]?[0-9]+$",
+    re.IGNORECASE,
+)
+
 _QTY_PATTERNS = [
     re.compile(r"\bqty[:\s]*([0-9][0-9,]*)", re.IGNORECASE),
     re.compile(r"\bquantity[:\s]*([0-9][0-9,]*)", re.IGNORECASE),
@@ -82,6 +95,8 @@ def extract_mpn_candidates(text, limit=12):
             continue
         upper = token.upper()
         if upper in _MPN_STOPWORDS or upper in seen:
+            continue
+        if _REFERENCE_RE.match(token):
             continue
         digits = sum(c.isdigit() for c in token)
         letters = sum(c.isalpha() for c in token)
